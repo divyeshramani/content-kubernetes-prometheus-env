@@ -1,5 +1,6 @@
 # Prometheus/Grafana on Kubernetes
 
+Install Prometheus/Grafana in Kubernetes cluster with sample app containing promeheus instrumentation. 
 
 ## Setup Prometheus 
 
@@ -37,8 +38,11 @@ kubectl apply -f grafana-deployment.yml
 kubectl apply -f grafana-service.yml
 ```
 
+Go to Grafana UI. Go to "DataSources -> Add New Datasource". Setup "Prometheus" type datasource with public IP url of Prometheus.   
 
-## Setup NodeExporter
+## Setup NodeExporter 
+Follow instruction on each node on cluster to install node-exporter. 
+
 Create the Prometheus user:
 ```
 adduser prometheus
@@ -73,4 +77,51 @@ systemctl enable node_exporter.service
 systemctl start node_exporter.service
 systemctl status node_exporter.service
 ```
+
+## Prometheus Graph QL
+
+Go to Prometheus and click on the Graph tab. 
+
+Memory usage query:
+```
+((sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes) - sum(node_memory_Buffers_bytes) - sum(node_memory_Cached_bytes)) / sum(node_memory_MemTotal_bytes)) * 100
+
+
+## Setup Grafana Dashboard
+
+Import Grafana dashboard from file `grafana/dashboard/Kubernetes All Nodes.json` by importing it with previously created  propmetheus datasource. 
+
+
+## Prometheus Instrumetation 
+
+Prometheus client libraries are located here: https://prometheus.io/docs/instrumenting/clientlibs/
+
+NodeJS uses swagger-stats library with very simple integration. 
+
+```
+var swStats = require('swagger-stats');
+
+app.use(swStats.getMiddleware());
+```
+
+Sample app with instrumentation: https://github.com/divyeshramani/content-kubernetes-prometheus-app
+
+Clone the repo and to run the sample app locally (port 3000)
+```
+sudo apt-get install -y npm
+npm install
+npm start
+```
+
+Deploy sample app in kubernetes using deployment.yml file from sample app folder. 
+```
+# To build your own docker image. 
+docker build -t your_docker_hub_id/comicbox . 
+docker push your_docker_hub_id/comicbox
+
+kubectl apply -f deployment.yml 
+```
+
+Import new Grafana swagger stats dashboard using dashboard id 3091 and select prometheus datasource. 
+
 
