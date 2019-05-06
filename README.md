@@ -85,7 +85,7 @@ Go to Prometheus and click on the Graph tab.
 Memory usage query:
 ```
 ((sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes) - sum(node_memory_Buffers_bytes) - sum(node_memory_Cached_bytes)) / sum(node_memory_MemTotal_bytes)) * 100
-
+```
 
 ## Setup Grafana Dashboard
 
@@ -104,7 +104,8 @@ var swStats = require('swagger-stats');
 app.use(swStats.getMiddleware());
 ```
 
-Sample app with instrumentation: https://github.com/divyeshramani/content-kubernetes-prometheus-app
+### Sample app 
+Prometheus instrumentation: https://github.com/divyeshramani/content-kubernetes-prometheus-app
 
 Clone the repo and to run the sample app locally (port 3000)
 ```
@@ -114,6 +115,7 @@ npm start
 ```
 
 Deploy sample app in kubernetes using deployment.yml file from sample app folder. 
+
 ```
 # To build your own docker image. 
 docker build -t your_docker_hub_id/comicbox . 
