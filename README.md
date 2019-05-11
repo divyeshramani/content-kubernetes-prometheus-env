@@ -127,3 +127,14 @@ kubectl apply -f deployment.yml
 Import new Grafana swagger stats dashboard using dashboard id 3091 and select prometheus datasource. 
 
 
+## PromQL
+
+Doc: https://prometheus.io/docs/prometheus/latest/querying/basics/
+
+```
+node_cpu_seconds_total{job="node-exporter", mode="idle"}[5m]
+# Use regex: Query job that begins with kube
+container_cpu_load_average_10s{job=~"^kube.*"}
+# Query job that end with -exporter
+node_cpu_seconds_total{job=~".*-exporter"}
+```
