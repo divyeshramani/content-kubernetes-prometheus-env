@@ -133,8 +133,10 @@ Doc: https://prometheus.io/docs/prometheus/latest/querying/basics/
 
 ```
 node_cpu_seconds_total{job="node-exporter", mode="idle"}[5m]
+
 # Use regex: Query job that begins with kube
 container_cpu_load_average_10s{job=~"^kube.*"}
+
 # Query job that end with -exporter
 node_cpu_seconds_total{job=~".*-exporter"}
 ```
@@ -148,6 +150,7 @@ Functions Doc: https://prometheus.io/docs/prometheus/latest/querying/functions/
 ```
 # Get a percentage of total memory used by node:
 ((node_memory_MemTotal_bytes - node_memory_MemFree_bytes - node_memory_Buffers_bytes - node_memory_Cached_bytes) / node_memory_MemTotal_bytes) * 100
+
 # Get a percentage of total memory used in Cluster:
 ((sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes) - sum(node_memory_Buffers_bytes) - sum(node_memory_Cached_bytes)) / sum(node_memory_MemTotal_bytes)) * 100
 
