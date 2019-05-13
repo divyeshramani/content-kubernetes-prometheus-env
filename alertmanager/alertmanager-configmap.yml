@@ -17,6 +17,6 @@ data:
     - name: slack_receiver
       slack_configs:
       - send_resolved: true
-        username: '<SLACK_USER>'
-        api_url: '<APP_URL>'
-        channel: '#<CHANNEL>'
+        username: 'divyesh.ramani@gmail.com'
+        api_url: 'https://hooks.slack.com/services/TJHML351D/BJEV3V64R/PcnL8ejjhrXyhNDBrCGI0V'
+        channel: '#alerts'

@@ -6,36 +6,36 @@ Install Prometheus/Grafana in Kubernetes cluster with sample app containing prom
 
 A metrics namespace for our environment to live in
 ```
-kubectl apply -f namespaces.yml
+kubectl apply -f prometheus/namespaces.yml
 ```
 
 A ClusterRole to give Prometheus access to targets using Service Discovery
 ```
-kubectl apply -f clusterRole.yml 
+kubectl apply -f prometheus/clusterRole.yml 
 ```
 
 Update node's IP address in "prometheus-config-map.yml" 
 ```
-kubectl apply -f prometheus-config-map.yml
+kubectl apply -f prometheus/prometheus-config-map.yml
 ```
 A Prometheus Deployment and Service
 ```
-kubectl apply -f prometheus-deployment.yml 
-kubectl apply -f prometheus-service.yml
+kubectl apply -f prometheus/prometheus-deployment.yml 
+kubectl apply -f prometheus/prometheus-service.yml
 ```
 
 Kube State Metrics to get access to metrics on the Kubernetes API
 ```
-kubectl apply -f kube-state-metrics.yml
+kubectl apply -f prometheus/kube-state-metrics.yml
 ```
 
 
 ## Setup Grafana
 
-Change the password in `grafana-deployment.yml`. And run following
+Change the password in `grafana/grafana-deployment.yml`. And run following
 ```
-kubectl apply -f grafana-deployment.yml
-kubectl apply -f grafana-service.yml
+kubectl apply -f grafana/grafana-deployment.yml
+kubectl apply -f grafana/grafana-service.yml
 ```
 
 Go to Grafana UI. Go to "DataSources -> Add New Datasource". Setup "Prometheus" type datasource with public IP url of Prometheus.   
@@ -156,4 +156,15 @@ Functions Doc: https://prometheus.io/docs/prometheus/latest/querying/functions/
 
 # Using Operations, Functions and Grouping in Queries
 avg(irate(node_cpu_seconds_total{job="node-exporter", mode="idle"}[5m])) by (instance)
+```
+
+## Alert Manager (with Slack config)
+
+* Create Slack channels for alert. 
+* Create Slack APP with allowing external source to post message using webhook. 
+* Get API url from Slack and set it to config values inside `alertmanager/alertmanager-configmap.yml`
+* Apply AlertManager Config Map and Deployment
+```
+kubectl apply -f alertmanager/alertmanager-configmap.yml
+kubectl apply -f alertmanager/alertmanager-depoloyment.yml
 ```
