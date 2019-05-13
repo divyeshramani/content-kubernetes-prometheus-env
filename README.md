@@ -167,4 +167,17 @@ avg(irate(node_cpu_seconds_total{job="node-exporter", mode="idle"}[5m])) by (ins
 ```
 kubectl apply -f alertmanager/alertmanager-configmap.yml
 kubectl apply -f alertmanager/alertmanager-depoloyment.yml
+kubectl apply -f alertmanager/alertmanager-service.yml
+
+# Apply Prometheus config changes for alerts
+kubectl apply -f alertmanager/prometheus-rules-config-map.yml
+kubectl apply -f alertmanager/prometheus-config-map.yml
+kubectl apply -f alertmanager/prometheus-deployment.yml
+```
+
+This will fire "RedisServerGone" alert. 
+
+To clear the redis server alert, deploy the redis pod
+```
+kubectl apply -f redis/redis.yml
 ```
